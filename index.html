@@ -7,10 +7,101 @@
   <title>Pokémon GO Data Visualization</title>
 </head>
 <body>
+  <svg id="svg" width="800" height="400"></svg>
   
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3.v6.js"></script>
   <script>
+    // Parse the Data
+    d3.csv("./data/pokemonGO.csv").then( data => {
+      const margin = { top: 10, right: 10, bottom: 20, left: 40 }
+      const width = 800 - (margin.left + margin.right)
+      const height = 400 - (margin.top + margin.bottom)
 
+      const getAllValuesForProperty = (data, property) => {
+        const allPropValues = data.filter(d => d[property] !== '').map(d => d[property])
+        console.log(allPropValues)
+        return allPropValues
+      }
+
+      const allType1 = getAllValuesForProperty(data, 'type1')
+      const allType2 = getAllValuesForProperty(data, 'type2')
+
+      const uniqueTypes = allType1.concat(allType2)
+      console.log(uniqueTypes)
+
+      const makeHistogram = (data) => {
+        const histogram = data.reduce((acc, d) => {
+          // IF this property (p) exist on the acc then add one to the value
+          if (acc[d] !== undefined) {
+            acc[d] += 1
+          // ELSE if doesn't exist, add new property (p) then set the value to 1
+          } else {
+            acc[d] = 1
+          }
+          return acc 
+        }, {})
+        const names = Object.keys(histogram)
+        // console.log(histogram)
+        // return Array.from(histogram, v => v || 0)
+        const namesAndValues = names.map(name => {
+          return {name, value:histogram[name]}
+        })
+        return namesAndValues
+      }
+
+      const histoOfTypesCount = makeHistogram(uniqueTypes)
+      console.log(histoOfTypesCount)
+
+      // X axis
+      const xscale = d3.scaleBand()
+        .domain(histoOfTypesCount.map(obj => obj.name))
+        .range([margin.left, width + margin.right])
+        .padding(0.05)
+
+      // Y axis
+      const values = histoOfTypesCount.map(obj => obj.value)
+      const yExtent = d3.extent(values)
+      const yscale = d3.scaleLinear()
+        .domain([0, (yExtent[1] + 1)])
+        .range([height, margin.top])
+
+      // Colors
+      const colors = d3.scaleOrdinal().range(['#78c850', '#f08030', '#6791f0', '#a8b81f', '#a8a878', '#a0419f', '#f9d030', '#e0c068', '#ee99ac', '#c03129', '#f95887', '#b8a039', '#6f5898', '#99d8d8', '#7138f8', '#a891f0', '#b8b8d0']);
+
+      // Select the SVG
+      const svg = d3.select('#svg')
+
+      const barGroup = svg.append('g')
+
+      // Make the bars
+      barGroup 
+        .selectAll('rect')
+        .data(histoOfTypesCount)
+        .enter()
+        .append('rect')
+        .attr('class', 'bar')
+        .attr('x', (d, i) => xscale(d.name))
+        .attr('y', d => yscale(d.value))
+        .attr('width', xscale.bandwidth())
+        .attr('height', d => height - yscale(d.value))
+        .attr('fill', (d, i) => colors(i))
+
+      const bottomAxis = d3.axisBottom(xscale)
+
+      svg
+        .append('g')
+        .attr('transform', `translate(${0}, ${height})`)
+        .call(bottomAxis)
+
+      const leftAxis = d3.axisLeft(yscale)
+        .ticks(12)
+        .tickSize(-width)
+
+      svg
+        .append('g')
+        .attr('transform', `translate(${margin.left}, 0)`)
+        .call(leftAxis)
+    })
   </script>
 </body>
 </html>
