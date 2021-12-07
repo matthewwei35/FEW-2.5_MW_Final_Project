@@ -24,18 +24,22 @@
       const width = 800 - (margin.left + margin.right)
       const height = 400 - (margin.top + margin.bottom)
 
+      // Returns values for specific property in dataset
       const getAllValuesForProperty = (data, property) => {
         const allPropValues = data.filter(d => d[property] !== '').map(d => d[property])
-        console.log(allPropValues)
+        // console.log(allPropValues)
         return allPropValues
       }
 
+      // Get all types for 1 and 2
       const allType1 = getAllValuesForProperty(data, 'type1')
       const allType2 = getAllValuesForProperty(data, 'type2')
 
+      // Concat the AllType1 and AllType2 arrays
       const uniqueTypes = allType1.concat(allType2)
-      console.log(uniqueTypes)
+      // console.log(uniqueTypes)
 
+      // Returns histogram of given array
       const makeHistogram = (data) => {
         const histogram = data.reduce((acc, d) => {
           // IF this property (p) exist on the acc then add one to the value
@@ -56,9 +60,10 @@
         return namesAndValues
       }
 
+      // Use makeHistogram on uniqueTypes
       const histoOfTypesCount = makeHistogram(uniqueTypes)
       histoOfTypesCount.sort((a, b) => b.value - a.value)
-      console.log(histoOfTypesCount)
+      // console.log(histoOfTypesCount)
 
       // X axis
       const xscale = d3.scaleBand()
@@ -74,7 +79,6 @@
         .range([height, margin.top])
 
       // Colors
-      // const colors = d3.scaleOrdinal().range(['#78c850', '#f08030', '#6791f0', '#a8b81f', '#a8a878', '#a0419f', '#f9d030', '#e0c068', '#ee99ac', '#c03129', '#f95887', '#b8a039', '#6f5898', '#99d8d8', '#7138f8', '#a891f0', '#b8b8d0']);
       const colorsByType = [
         {type: 'Bug', color: '#a8b81f'},
         {type: 'Dragon', color: '#7138f8'},
@@ -95,12 +99,12 @@
         {type: 'Water', color: '#6791f0'}
       ]
 
-      // Select the SVG
+      // SVG
       const svg = d3.select('#svg')
 
       const barGroup = svg.append('g')
 
-      // Make the bars
+      // Bars
       barGroup 
         .selectAll('rect')
         .data(histoOfTypesCount)
@@ -121,6 +125,7 @@
         .append('svg:title')
           .text(d => d.value)
 
+      // Axis'
       const bottomAxis = d3.axisBottom(xscale)
 
       svg
