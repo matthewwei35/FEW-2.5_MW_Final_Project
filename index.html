@@ -117,6 +117,8 @@
             }
           }
         })
+        .append('svg:title')
+          .text(d => d.value)
 
       const bottomAxis = d3.axisBottom(xscale)
 
