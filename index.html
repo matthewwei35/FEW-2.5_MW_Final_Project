@@ -51,13 +51,13 @@
           }
           return acc 
         }, {})
-        const names = Object.keys(histogram)
+        const types = Object.keys(histogram)
         // console.log(histogram)
         // return Array.from(histogram, v => v || 0)
-        const namesAndValues = names.map(name => {
-          return {name, value:histogram[name]}
+        const typesAndValues = types.map(type => {
+          return {type, value:histogram[type]}
         })
-        return namesAndValues
+        return typesAndValues
       }
 
       // Use makeHistogram on uniqueTypes
@@ -67,7 +67,7 @@
 
       // X axis
       const xscale = d3.scaleBand()
-        .domain(histoOfTypesCount.map(obj => obj.name))
+        .domain(histoOfTypesCount.map(obj => obj.type))
         .range([margin.left, width + margin.right])
         .padding(0.05)
 
@@ -111,19 +111,19 @@
         .enter()
         .append('rect')
         .attr('class', 'bar')
-        .attr('x', (d, i) => xscale(d.name))
+        .attr('x', (d, i) => xscale(d.type))
         .attr('y', d => yscale(d.value))
         .attr('width', xscale.bandwidth())
         .attr('height', d => height - yscale(d.value))
         .attr('fill', (d, i) => {
           for (let j = 0; j < histoOfTypesCount.length; j += 1) {
-            if (histoOfTypesCount[i].name === colorsByType[j].type) {
+            if (histoOfTypesCount[i].type === colorsByType[j].type) {
               return colorsByType[j].color
             }
           }
         })
         .append('svg:title')
-          .text(d => d.value)
+          .text(d => `${d.type}: ${d.value}`)
 
       // Axis'
       const bottomAxis = d3.axisBottom(xscale)
