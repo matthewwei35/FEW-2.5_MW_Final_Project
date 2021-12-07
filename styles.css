@@ -1,0 +1,13 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 2rem;
+}
+
+#header {
+  display: flex;
+  align-items: center;
+}
+
+#header img {
+  padding-right: 0.5rem;
+}
