@@ -19,7 +19,7 @@
   <script src="https://d3js.org/d3.v6.js"></script>
   <script>
     // Parse the Data
-    d3.csv("./data/pokemonGO.csv").then( data => {
+    d3.csv("./data/pokedex.csv").then( data => {
       const margin = { top: 10, right: 40, bottom: 10, left: 40 }
       const width = 800 - (margin.left + margin.right)
       const height = 400 - (margin.top + margin.bottom)
@@ -32,8 +32,8 @@
       }
 
       // Get all types for 1 and 2
-      const allType1 = getAllValuesForProperty(data, 'type1')
-      const allType2 = getAllValuesForProperty(data, 'type2')
+      const allType1 = getAllValuesForProperty(data, 'type_1')
+      const allType2 = getAllValuesForProperty(data, 'type_2')
 
       // Concat the AllType1 and AllType2 arrays
       const uniqueTypes = allType1.concat(allType2)
@@ -81,6 +81,7 @@
       // Colors
       const colorsByType = [
         {type: 'Bug', color: '#a8b81f'},
+        {type: 'Dark', color: '#6f5848'},
         {type: 'Dragon', color: '#7138f8'},
         {type: 'Electric', color: '#f9d030'},
         {type: 'Fairy', color: '#ee99ac'},
