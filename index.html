@@ -25,15 +25,15 @@
       const height = 400 - (margin.top + margin.bottom)
 
       // Returns values for specific property in dataset
-      const getAllValuesForProperty = (data, property) => {
-        const allPropValues = data.filter(d => d[property] !== '').map(d => d[property])
+      const getAllValuesForProperty = (data, generation, property) => {
+        const allPropValues = data.filter(d => d.generation === generation).filter(d => d[property] !== '').map(d => d[property])
         // console.log(allPropValues)
         return allPropValues
       }
 
       // Get all types for 1 and 2
-      const allType1 = getAllValuesForProperty(data, 'type_1')
-      const allType2 = getAllValuesForProperty(data, 'type_2')
+      const allType1 = getAllValuesForProperty(data, '1', 'type_1')
+      const allType2 = getAllValuesForProperty(data, '1', 'type_2')
 
       // Concat the AllType1 and AllType2 arrays
       const uniqueTypes = allType1.concat(allType2)
