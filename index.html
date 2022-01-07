@@ -5,60 +5,104 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
-  <title>Pokémon GO Data Visualization</title>
+  <title>Pokémon Data Visualization</title>
 </head>
 <body>
   <div id="header">
     <a href="https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_National_Pok%C3%A9dex_number#Generation_I"><img src="./images/pokeball.png" alt="pokeball" width="35" height="35"></a>
-    <h1>Pokémon GO Data Visualization</h1>
+    <h1>Pokémon Data Visualization</h1>
   </div>
-  <p>Gen 1 Pokémon Types and Quantity of Pokémon of Each Type</p>
 
-  <svg id="svg" width="800" height="400"></svg>
+  <h2>Gen 1 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg1" width="800" height="400"></svg>
+
+  <h2>Gen 2 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg2" width="800" height="400"></svg>
+
+  <h2>Gen 3 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg3" width="800" height="400"></svg>
+
+  <h2>Gen 4 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg4" width="800" height="400"></svg>
+
+  <h2>Gen 5 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg5" width="800" height="400"></svg>
+
+  <h2>Gen 6 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg6" width="800" height="400"></svg>
+
+  <h2>Gen 7 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg7" width="800" height="400"></svg>
+
+  <h2>Gen 8 Pokémon Types and Quantity of Pokémon of Each Type</h2>
+  <svg id="svg8" width="800" height="400"></svg>
   
   <script src="https://d3js.org/d3.v6.js"></script>
   <script>
+    // Returns values for specific property in dataset
+    const getAllValuesForProperty = (data, generation, property) => {
+      const allPropValues = data.filter(d => d.generation === generation).filter(d => d[property] !== '').map(d => d[property])
+      // console.log(allPropValues)
+      return allPropValues
+    }
+
+    // Returns histogram of given array
+    const makeHistogram = (data) => {
+      const histogram = data.reduce((acc, d) => {
+        // IF this property (p) exist on the acc then add one to the value
+        if (acc[d] !== undefined) {
+          acc[d] += 1
+        // ELSE doesn't exist, add new property (p) then set the value to 1
+        } else {
+          acc[d] = 1
+        }
+        return acc 
+      }, {})
+      const types = Object.keys(histogram)
+      // console.log(histogram)
+      // return Array.from(histogram, v => v || 0)
+      const typesAndValues = types.map(type => {
+        return {type, value:histogram[type]}
+      })
+      return typesAndValues
+    }
+
+    // Colors
+    const colorsByType = [
+      {type: 'Bug', color: '#a8b81f'},
+      {type: 'Dark', color: '#6f5848'},
+      {type: 'Dragon', color: '#7138f8'},
+      {type: 'Electric', color: '#f9d030'},
+      {type: 'Fairy', color: '#ee99ac'},
+      {type: 'Fighting', color: '#c03129'},
+      {type: 'Fire', color: '#f08030'},
+      {type: 'Flying', color: '#a891f0'},
+      {type: 'Ghost', color: '#6f5898'},
+      {type: 'Grass', color: '#78c850'},
+      {type: 'Ground', color: '#e0c068'},
+      {type: 'Ice', color: '#99d8d8'},
+      {type: 'Normal', color: '#a8a878'},
+      {type: 'Poison', color: '#a0419f'},
+      {type: 'Psychic', color: '#f95887'},
+      {type: 'Rock', color: '#b8a039'},
+      {type: 'Steel', color: '#b8b8d0'},
+      {type: 'Water', color: '#6791f0'}
+    ]
+
     // Parse the Data
-    d3.csv("./data/pokedex.csv").then( data => {
+    async function handleData(selector, generation) {
+      const data = await d3.csv("./data/pokedex.csv")
       const margin = { top: 10, right: 40, bottom: 10, left: 40 }
       const width = 800 - (margin.left + margin.right)
       const height = 400 - (margin.top + margin.bottom)
 
-      // Returns values for specific property in dataset
-      const getAllValuesForProperty = (data, generation, property) => {
-        const allPropValues = data.filter(d => d.generation === generation).filter(d => d[property] !== '').map(d => d[property])
-        // console.log(allPropValues)
-        return allPropValues
-      }
-
       // Get all types for 1 and 2
-      const allType1 = getAllValuesForProperty(data, '1', 'type_1')
-      const allType2 = getAllValuesForProperty(data, '1', 'type_2')
+      const allType1 = getAllValuesForProperty(data, generation, 'type_1')
+      const allType2 = getAllValuesForProperty(data, generation, 'type_2')
 
       // Concat the AllType1 and AllType2 arrays
       const uniqueTypes = allType1.concat(allType2)
       // console.log(uniqueTypes)
-
-      // Returns histogram of given array
-      const makeHistogram = (data) => {
-        const histogram = data.reduce((acc, d) => {
-          // IF this property (p) exist on the acc then add one to the value
-          if (acc[d] !== undefined) {
-            acc[d] += 1
-          // ELSE doesn't exist, add new property (p) then set the value to 1
-          } else {
-            acc[d] = 1
-          }
-          return acc 
-        }, {})
-        const types = Object.keys(histogram)
-        // console.log(histogram)
-        // return Array.from(histogram, v => v || 0)
-        const typesAndValues = types.map(type => {
-          return {type, value:histogram[type]}
-        })
-        return typesAndValues
-      }
 
       // Use makeHistogram on uniqueTypes
       const histoOfTypesCount = makeHistogram(uniqueTypes)
@@ -78,30 +122,8 @@
         .domain([0, (yExtent[1] + 1)])
         .range([height, margin.top])
 
-      // Colors
-      const colorsByType = [
-        {type: 'Bug', color: '#a8b81f'},
-        {type: 'Dark', color: '#6f5848'},
-        {type: 'Dragon', color: '#7138f8'},
-        {type: 'Electric', color: '#f9d030'},
-        {type: 'Fairy', color: '#ee99ac'},
-        {type: 'Fighting', color: '#c03129'},
-        {type: 'Fire', color: '#f08030'},
-        {type: 'Flying', color: '#a891f0'},
-        {type: 'Ghost', color: '#6f5898'},
-        {type: 'Grass', color: '#78c850'},
-        {type: 'Ground', color: '#e0c068'},
-        {type: 'Ice', color: '#99d8d8'},
-        {type: 'Normal', color: '#a8a878'},
-        {type: 'Poison', color: '#a0419f'},
-        {type: 'Psychic', color: '#f95887'},
-        {type: 'Rock', color: '#b8a039'},
-        {type: 'Steel', color: '#b8b8d0'},
-        {type: 'Water', color: '#6791f0'}
-      ]
-
       // SVG
-      const svg = d3.select('#svg')
+      const svg = d3.select(selector)
 
       const barGroup = svg.append('g')
 
@@ -142,7 +164,16 @@
         .append('g')
         .attr('transform', `translate(${margin.left}, 0)`)
         .call(leftAxis)
-    })
+    }
+
+    handleData('#svg1', '1')
+    handleData('#svg2', '2')
+    handleData('#svg3', '3')
+    handleData('#svg4', '4')
+    handleData('#svg5', '5')
+    handleData('#svg6', '6')
+    handleData('#svg7', '7')
+    handleData('#svg8', '8')
   </script>
 </body>
 </html>
