@@ -15,6 +15,16 @@
 
   <h2>Gen 1 Pokémon Types and Quantity of Pokémon of Each Type</h2>
   <svg id="svg1" width="800" height="400"></svg>
+  <button id="sortAscending" onclick="
+    sortByAscending = true
+    clearOldGraphs()
+    createGraphs()
+  ">Ascending</button>
+  <button id="sortDescending" onclick="
+    sortByAscending = false
+    clearOldGraphs()
+    createGraphs()
+  ">Descending</button>
 
   <h2>Gen 2 Pokémon Types and Quantity of Pokémon of Each Type</h2>
   <svg id="svg2" width="800" height="400"></svg>
@@ -67,6 +77,11 @@
       return typesAndValues
     }
 
+    function clearOldGraphs() {
+      d3.selectAll("rect").remove()
+      d3.selectAll("g").remove()
+    }
+
     // Colors
     const colorsByType = [
       {type: 'Bug', color: '#a8b81f'},
@@ -89,6 +104,8 @@
       {type: 'Water', color: '#6791f0'}
     ]
 
+    let sortByAscending = true
+
     // Parse the Data
     async function handleData(selector, generation) {
       const data = await d3.csv("./data/pokedex.csv")
@@ -106,7 +123,12 @@
 
       // Use makeHistogram on uniqueTypes
       const histoOfTypesCount = makeHistogram(uniqueTypes)
-      histoOfTypesCount.sort((a, b) => b.value - a.value)
+      // histoOfTypesCount.sort((a, b) => a.value - b.value)
+      if (sortByAscending === false) {
+        histoOfTypesCount.sort((a, b) => a.value - b.value)
+      } else {
+        histoOfTypesCount.sort((a, b) => b.value - a.value)
+      }
       // console.log(histoOfTypesCount)
 
       // X axis
@@ -166,14 +188,18 @@
         .call(leftAxis)
     }
 
-    handleData('#svg1', '1')
-    handleData('#svg2', '2')
-    handleData('#svg3', '3')
-    handleData('#svg4', '4')
-    handleData('#svg5', '5')
-    handleData('#svg6', '6')
-    handleData('#svg7', '7')
-    handleData('#svg8', '8')
+    function createGraphs() {
+      handleData('#svg1', '1')
+      handleData('#svg2', '2')
+      handleData('#svg3', '3')
+      handleData('#svg4', '4')
+      handleData('#svg5', '5')
+      handleData('#svg6', '6')
+      handleData('#svg7', '7')
+      handleData('#svg8', '8')
+    }
+    createGraphs()
+
   </script>
 </body>
 </html>
