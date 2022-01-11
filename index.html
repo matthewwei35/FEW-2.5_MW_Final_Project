@@ -77,6 +77,7 @@
       return typesAndValues
     }
 
+    // Removes old data on Graphs
     function clearOldGraphs() {
       d3.selectAll("rect").remove()
       d3.selectAll("g").remove()
@@ -104,6 +105,7 @@
       {type: 'Water', color: '#6791f0'}
     ]
 
+    // Boolean of if user wants to sort Graphs by Ascending
     let sortByAscending = true
 
     // Parse the Data
@@ -188,6 +190,7 @@
         .call(leftAxis)
     }
 
+    // Creates all graphs using handleData
     function createGraphs() {
       handleData('#svg1', '1')
       handleData('#svg2', '2')
@@ -198,6 +201,7 @@
       handleData('#svg7', '7')
       handleData('#svg8', '8')
     }
+    
     createGraphs()
 
   </script>
