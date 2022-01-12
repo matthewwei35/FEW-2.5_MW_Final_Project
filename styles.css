@@ -1,10 +1,11 @@
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   padding: 2rem;
 }
 
 h2 {
   text-align: center;
+  font-weight: 300;
 }
 
 svg {
@@ -13,20 +14,8 @@ svg {
   margin-bottom: 3rem;
 }
 
-#button-group {
-  display: flex;
-  justify-content: center;
-}
-
-#button-group button {
-  width: 90px
-}
-
-#button-group #sort-ascending {
-  margin-right: 1rem;
-}
-
 #header {
+  font-family: 'Open Sans', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,4 +23,18 @@ svg {
 
 #header img {
   padding-right: 0.5rem;
+}
+
+#button-group {
+  display: flex;
+  justify-content: center;
+}
+
+#button-group button {
+  font-family: 'Montserrat', sans-serif;
+  width: 100px
+}
+
+#button-group #sort-ascending {
+  margin-right: 1rem;
 }
