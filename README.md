@@ -10,4 +10,4 @@ A basic visualization of each generation and the number of each type that appear
 
 ## Data Set
 
-[Complete Pokemon Dataset (Updated 16.04.21)](https://www.kaggle.com/mariotormo/m,complete-pokemon-dataset-updated-090420), full credit goes to [Mario Tormo Romero](https://www.kaggle.com/mariotormo).
+[Complete Pokemon Dataset (Updated 16.04.21)](https://www.kaggle.com/mariotormo/complete-pokemon-dataset-updated-090420), full credit goes to [Mario Tormo Romero](https://www.kaggle.com/mariotormo).
