@@ -3,8 +3,32 @@ body {
   padding: 2rem;
 }
 
+h2 {
+  text-align: center;
+}
+
+svg {
+  display: block;
+  margin: auto;
+  margin-bottom: 3rem;
+}
+
+#button-group {
+  display: flex;
+  justify-content: center;
+}
+
+#button-group button {
+  width: 90px
+}
+
+#button-group #sort-ascending {
+  margin-right: 1rem;
+}
+
 #header {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 

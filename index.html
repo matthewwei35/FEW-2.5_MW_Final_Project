@@ -13,18 +13,21 @@
     <h1>Pokémon Data Visualization</h1>
   </div>
 
+  <div id="button-group">
+    <button id="sort-ascending" onclick="
+      sortByAscending = true
+      clearOldGraphs()
+      createGraphs()
+    ">Ascending</button>
+    <button id="sort-descending" onclick="
+      sortByAscending = false
+      clearOldGraphs()
+      createGraphs()
+    ">Descending</button>
+  </div>
+
   <h2>Gen 1 Pokémon Types and Quantity of Pokémon of Each Type</h2>
   <svg id="svg1" width="800" height="400"></svg>
-  <button id="sortAscending" onclick="
-    sortByAscending = true
-    clearOldGraphs()
-    createGraphs()
-  ">Ascending</button>
-  <button id="sortDescending" onclick="
-    sortByAscending = false
-    clearOldGraphs()
-    createGraphs()
-  ">Descending</button>
 
   <h2>Gen 2 Pokémon Types and Quantity of Pokémon of Each Type</h2>
   <svg id="svg2" width="800" height="400"></svg>
@@ -201,7 +204,7 @@
       handleData('#svg7', '7')
       handleData('#svg8', '8')
     }
-    
+
     createGraphs()
 
   </script>
